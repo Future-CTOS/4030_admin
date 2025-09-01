@@ -1,6 +1,6 @@
 # app_4030_admin
 
-A new Flutter project.
+A Flutter project.
 
 ## Getting Started
 
