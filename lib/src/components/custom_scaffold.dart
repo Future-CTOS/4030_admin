@@ -124,6 +124,7 @@ class CustomScaffold extends StatelessWidget {
   );
 
   Widget _header() => Padding(
+    //
     padding: const EdgeInsets.only(top: AppSpacing.giantSpace),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
