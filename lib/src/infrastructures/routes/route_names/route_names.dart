@@ -20,4 +20,8 @@ class RouteNames extends Route {
     RoutePaths.dashboard,
   );
 
+  static const Route driverManagement = Route(
+    RoutePaths.driverManagement,
+    RoutePaths.driverManagement,
+  );
 }

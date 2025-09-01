@@ -1,36 +1,37 @@
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
+  final RxInt selectedId = RxInt(1);
   final mockData = [
     {
       "date": "1403/08/15",
       "name": "علی احمدی",
       "activity": "ثبت‌نام راننده",
-      "status": "تایید شده"
+      "status": "تایید شده",
     },
     {
       "date": "1403/08/15",
       "name": "محمد رضایی",
       "activity": "سفر",
-      "status": "تکمیل شده"
+      "status": "تکمیل شده",
     },
     {
       "date": "1403/08/15",
       "name": "فاطمه محمدی",
       "activity": "پرداخت",
-      "status": "در انتظار"
+      "status": "در انتظار",
     },
     {
       "date": "1403/08/15",
       "name": "فاطمه محمدی",
       "activity": "ثبت‌نام مسافر",
-      "status": "تایید شده"
+      "status": "لغو شده",
     },
     {
       "date": "1403/08/15",
       "name": "فاطمه محمدی",
       "activity": "سفر",
-      "status": "لغو شده"
+      "status": "لغو شده",
     },
   ];
 }

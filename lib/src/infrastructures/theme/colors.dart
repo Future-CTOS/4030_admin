@@ -3,10 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const _primaryColorValue = 0xffFFD600;
+  static const _primaryColorValue = 0xffFEF2B3;
   static const MaterialColor primaryColor = MaterialColor(
     _secondaryPrimaryValue,
-    <int, Color>{100: Color(0xffFFF6CC), 600: Color(_primaryColorValue)},
+    <int, Color>{
+      200: Color(_primaryColorValue),
+      500: Color(0xffFDE568),
+      900: Color(0xffF2CB03),
+    },
   );
 
   static const MaterialColor secondaryColor =

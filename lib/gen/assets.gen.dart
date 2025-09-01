@@ -42,11 +42,40 @@ class $AssetsFontsGen {
 class $AssetsPngsGen {
   const $AssetsPngsGen();
 
+  /// File path: assets/pngs/clock.png
+  AssetGenImage get clock => const AssetGenImage('assets/pngs/clock.png');
+
+  /// File path: assets/pngs/close-circle.png
+  AssetGenImage get closeCircle =>
+      const AssetGenImage('assets/pngs/close-circle.png');
+
+  /// File path: assets/pngs/filter.png
+  AssetGenImage get filter => const AssetGenImage('assets/pngs/filter.png');
+
+  /// File path: assets/pngs/info-circle.png
+  AssetGenImage get infoCircle =>
+      const AssetGenImage('assets/pngs/info-circle.png');
+
   /// File path: assets/pngs/profile.png
   AssetGenImage get profile => const AssetGenImage('assets/pngs/profile.png');
 
+  /// File path: assets/pngs/search.png
+  AssetGenImage get search => const AssetGenImage('assets/pngs/search.png');
+
+  /// File path: assets/pngs/tick-circle.png
+  AssetGenImage get tickCircle =>
+      const AssetGenImage('assets/pngs/tick-circle.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [profile];
+  List<AssetGenImage> get values => [
+    clock,
+    closeCircle,
+    filter,
+    infoCircle,
+    profile,
+    search,
+    tickCircle,
+  ];
 }
 
 class Assets {

@@ -1,0 +1,86 @@
+import 'package:app_4030_admin/gen/assets.gen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class DriverManagementController extends GetxController {
+  final RxInt selectedId = RxInt(1);
+
+  final reportsItems = [
+    {
+      'title': 'تاییده شده 9',
+      'value': '90',
+      'iconPath': Assets.pngs.tickCircle.path,
+      'color': Color(0xffD9F2E5),
+      'backgroundColor': Color(0xff79D2A6),
+    },
+    {
+      'title': 'ناقص 9',
+      'value': '120',
+      'iconPath': Assets.pngs.infoCircle.path,
+      'color': Color(0xffFFE7B6),
+      'backgroundColor': Color(0xffFFC34C),
+    },
+    {
+      'title': '2 رد شده',
+      'value': '150',
+      'iconPath': Assets.pngs.closeCircle.path,
+      'color': Color(0xffFCCFCF),
+      'backgroundColor': Color(0xffF98686),
+    },
+    {
+      'title': 'در انتظار 1',
+      'value': '3',
+      'iconPath': Assets.pngs.clock.path,
+      'color': Color(0xffFFF6CC),
+      'backgroundColor': Color(0xffFDE981),
+    },
+  ];
+
+  final mockTableData = [
+    {
+      "name": "مجید فرخ پور",
+      "phoneNumber": "09013924517",
+      "nationalCode": "2280124577",
+      "date": "1403/08/15",
+      "trips": "مشاهده",
+      "Documents": "مشاهده",
+      "status": "تایید شده",
+    },
+    {
+      "name": "علی پور حسینی",
+      "phoneNumber": "09013924517",
+      "nationalCode": "2280124577",
+      "date": "1403/08/15",
+      "trips": "مشاهده",
+      "Documents": "مشاهده",
+      "status": "تایید شده",
+    },
+    {
+      "name": "مهران مدیری",
+      "phoneNumber": "09013924517",
+      "nationalCode": "2280124577",
+      "date": "1404/02/15",
+      "trips": "مشاهده",
+      "Documents": "مشاهده",
+      "status": "تایید شده",
+    },
+    {
+      "name": "حسین ملکی پور",
+      "phoneNumber": "09013924517",
+      "nationalCode": "2280778577",
+      "date": "1403/08/15",
+      "trips": "مشاهده",
+      "Documents": "مشاهده",
+      "status": "در انتظار",
+    },
+    {
+      "name": "مجید فرخ پور",
+      "phoneNumber": "09013924517",
+      "nationalCode": "2280124577",
+      "date": "1403/08/15",
+      "trips": "مشاهده",
+      "Documents": "مشاهده",
+      "status": "تایید شده",
+    },
+  ];
+}
