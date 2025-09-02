@@ -17,6 +17,10 @@ class AppTheme {
       bodyMedium: AppTypography.body,
       bodySmall: AppTypography.caption,
       labelMedium: AppTypography.body.copyWith(color: AppColors.darkTextColor),
+      labelSmall: AppTypography.body.copyWith(
+        color: AppColors.secondaryColor.shade500,
+        fontSize: 12
+      ),
     ),
     colorScheme: ColorScheme.light(
       primary: AppColors.primaryColor.shade200,

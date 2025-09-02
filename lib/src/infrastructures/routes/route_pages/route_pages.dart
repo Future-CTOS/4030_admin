@@ -1,7 +1,9 @@
+import 'package:app_4030_admin/src/pages/driver_license_document/common/driver_license_document_binding.dart';
 import 'package:get/get.dart';
 
 import '../../../pages/dashboard/commons/dashboard_binding.dart';
 import '../../../pages/dashboard/views/dashboard_page.dart';
+import '../../../pages/driver_license_document/views/driver_license_document_page.dart';
 import '../../../pages/driver_management/common/driver_management_binding.dart';
 import '../../../pages/driver_management/views/driver_management_page.dart';
 import '../../../pages/splash_screen/bindings/splash_screen_page_binding.dart';
@@ -34,5 +36,12 @@ class RoutePages {
     name: RouteNames.driverManagement.path,
     page: DriverManagementPage.new,
     binding: DriverManagementBinding(),
+    children: [_driverLicenseDocument],
+  );
+
+  static GetPage get _driverLicenseDocument => GetPage(
+    name: RouteNames.driverLicenseDocument.path,
+    page: DriverLicenseDocumentPage.new,
+    binding: DriverLicenseDocumentBinding(),
   );
 }

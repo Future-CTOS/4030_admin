@@ -24,4 +24,9 @@ class RouteNames extends Route {
     RoutePaths.driverManagement,
     RoutePaths.driverManagement,
   );
+
+  static const Route driverLicenseDocument = Route(
+    RoutePaths.driverManagement + RoutePaths.driverLicenseDocument,
+    RoutePaths.driverLicenseDocument,
+  );
 }

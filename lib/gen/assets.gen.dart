@@ -42,6 +42,13 @@ class $AssetsFontsGen {
 class $AssetsPngsGen {
   const $AssetsPngsGen();
 
+  /// File path: assets/pngs/back_card.png
+  AssetGenImage get backCard =>
+      const AssetGenImage('assets/pngs/back_card.png');
+
+  /// File path: assets/pngs/car.png
+  AssetGenImage get car => const AssetGenImage('assets/pngs/car.png');
+
   /// File path: assets/pngs/clock.png
   AssetGenImage get clock => const AssetGenImage('assets/pngs/clock.png');
 
@@ -49,8 +56,15 @@ class $AssetsPngsGen {
   AssetGenImage get closeCircle =>
       const AssetGenImage('assets/pngs/close-circle.png');
 
+  /// File path: assets/pngs/document.png
+  AssetGenImage get document => const AssetGenImage('assets/pngs/document.png');
+
   /// File path: assets/pngs/filter.png
   AssetGenImage get filter => const AssetGenImage('assets/pngs/filter.png');
+
+  /// File path: assets/pngs/front_card.png
+  AssetGenImage get frontCard =>
+      const AssetGenImage('assets/pngs/front_card.png');
 
   /// File path: assets/pngs/info-circle.png
   AssetGenImage get infoCircle =>
@@ -68,9 +82,13 @@ class $AssetsPngsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    backCard,
+    car,
     clock,
     closeCircle,
+    document,
     filter,
+    frontCard,
     infoCircle,
     profile,
     search,
