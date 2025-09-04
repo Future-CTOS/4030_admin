@@ -1,4 +1,6 @@
+import 'package:app_4030_admin/src/infrastructures/routes/route_names/route_names.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomDriverManagementTable extends StatelessWidget {
   final List<Map<String, String>> data;
@@ -32,9 +34,9 @@ class CustomDriverManagementTable extends StatelessWidget {
         color: Colors.white,
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal, // 🔥 اسکرول افقی
+        scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical, // 🔥 اسکرول عمودی
+          scrollDirection: Axis.vertical,
           child: Table(
             border: const TableBorder(
               horizontalInside: BorderSide(color: Colors.black12, width: 0.5),
@@ -42,7 +44,6 @@ class CustomDriverManagementTable extends StatelessWidget {
             ),
             defaultColumnWidth: const FixedColumnWidth(140),
             children: [
-              // Header Row
               TableRow(
                 decoration: BoxDecoration(color: Color(0xfff5f5f5)),
                 children: [
@@ -68,11 +69,12 @@ class CustomDriverManagementTable extends StatelessWidget {
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: Text(row["Documents"] ?? "", textAlign: TextAlign.center),
+                        child: Text(
+                          row["Documents"] ?? "",
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      onTap: () {
-
-                      },
+                      onTap: () => Get.toNamed(RouteNames.driverLicenseDocument.uri),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(6),

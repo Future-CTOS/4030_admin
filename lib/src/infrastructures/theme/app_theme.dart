@@ -19,7 +19,7 @@ class AppTheme {
       labelMedium: AppTypography.body.copyWith(color: AppColors.darkTextColor),
       labelSmall: AppTypography.body.copyWith(
         color: AppColors.secondaryColor.shade500,
-        fontSize: 12
+        fontSize: 12,
       ),
     ),
     colorScheme: ColorScheme.light(
@@ -29,6 +29,7 @@ class AppTheme {
       onSecondary: AppColors.secondaryColor.shade500,
       onPrimary: AppColors.textColor,
       error: AppColors.errorColor,
+      onSurface: AppColors.successColor,
       surface: Colors.white,
     ),
   );

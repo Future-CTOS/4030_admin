@@ -70,6 +70,13 @@ class $AssetsPngsGen {
   AssetGenImage get infoCircle =>
       const AssetGenImage('assets/pngs/info-circle.png');
 
+  /// File path: assets/pngs/iranian_flag.png
+  AssetGenImage get iranianFlag =>
+      const AssetGenImage('assets/pngs/iranian_flag.png');
+
+  /// File path: assets/pngs/media.png
+  AssetGenImage get media => const AssetGenImage('assets/pngs/media.png');
+
   /// File path: assets/pngs/profile.png
   AssetGenImage get profile => const AssetGenImage('assets/pngs/profile.png');
 
@@ -79,6 +86,10 @@ class $AssetsPngsGen {
   /// File path: assets/pngs/tick-circle.png
   AssetGenImage get tickCircle =>
       const AssetGenImage('assets/pngs/tick-circle.png');
+
+  /// File path: assets/pngs/user_icon.png
+  AssetGenImage get userIcon =>
+      const AssetGenImage('assets/pngs/user_icon.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -90,9 +101,12 @@ class $AssetsPngsGen {
     filter,
     frontCard,
     infoCircle,
+    iranianFlag,
+    media,
     profile,
     search,
     tickCircle,
+    userIcon,
   ];
 }
 

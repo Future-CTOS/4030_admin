@@ -1,181 +1,249 @@
 import 'package:app_4030_admin/src/infrastructures/utils/spacing.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../gen/assets.gen.dart';
+import '../../../components/iran_plate.dart';
+import '../../shared/widgets/custom_button.dart';
+import '../controller/driver_license_document_controller.dart';
 
-class DriverLicenseDocumentPage extends StatelessWidget {
+class DriverLicenseDocumentPage
+    extends GetView<DriverLicenseDocumentController> {
   const DriverLicenseDocumentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final bool canPop = Navigator.of(context).canPop();
     return Scaffold(
-      appBar: _appBar(theme),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(
-              horizontal: AppSpacing.mediumSpace,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('اطلاعات هویتی', style: theme.textTheme.bodyMedium),
-                    Image.asset(
-                      Assets.pngs.profile.path,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: AppSpacing.largePadding,
-                  padding: AppSpacing.largePadding,
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F4FF),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      _buildRowInformation(
-                        key: ':نام',
-                        value: 'بهراد',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':نام خانوادگی',
-                        value: 'محمدی',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':نام پدر',
-                        value: 'محمد',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':شماره شناسنامه',
-                        value: '0123456789',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':تاریخ تولد',
-                        value: '1385/10/10',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':کد ملی',
-                        value: '0123456789',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':آدرس',
-                        value: 'تهران زعفرانیه کوچه 2',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':شهر محل فعالیت',
-                        value: 'تهران',
-                        context: context,
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('اطلاعات خودرو', style: theme.textTheme.bodyMedium),
-                    AppSpacing.smallHorizontalSpacer,
-                    Image.asset(
-                      Assets.pngs.car.path,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: AppSpacing.largePadding,
-                  padding: AppSpacing.largePadding,
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F4FF),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      _buildRowInformation(
-                        key: ':سیستم و تیپ خودرو',
-                        value: 'دنا پلاس',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':مدل(سال تولید خودرو)',
-                        value: '1385',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':رنگ خودرو',
-                        value: 'مشکی',
-                        context: context,
-                      ),
-                      AppSpacing.xxLargeVerticalSpacer,
-                      _buildRowInformation(
-                        key: ':پلاک',
-                        value: '22 الف 222 (63 ایران)',
-                        context: context,
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('مدارک ارسالی', style: theme.textTheme.bodyMedium),
-                    AppSpacing.smallHorizontalSpacer,
-                    Image.asset(
-                      Assets.pngs.document.path,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: AppSpacing.largePadding,
-                  padding: AppSpacing.largePadding,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: theme.colorScheme.onPrimary),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(':گواهی نامه', style: theme.textTheme.bodyMedium),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: _appBar(theme: theme, canPop: canPop),
+      body: SafeArea(child: _content(theme, context)),
     );
   }
+
+  Widget _content(ThemeData theme, BuildContext context) =>
+      SingleChildScrollView(
+        child: Padding(
+          padding: AppSpacing.mediumPadding,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('اطلاعات هویتی', style: theme.textTheme.bodyMedium),
+                  Image.asset(
+                    Assets.pngs.profile.path,
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                  AppSpacing.mediumHorizontalSpacer,
+                ],
+              ),
+              Container(
+                margin: AppSpacing.largePadding,
+                padding: AppSpacing.largePadding,
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F4FF),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    _buildRowInformation(
+                      key: ':نام',
+                      value: 'بهراد',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':نام خانوادگی',
+                      value: 'محمدی',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':نام پدر',
+                      value: 'محمد',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':شماره شناسنامه',
+                      value: '0123456789',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':تاریخ تولد',
+                      value: '1385/10/10',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':کد ملی',
+                      value: '0123456789',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':آدرس',
+                      value: 'تهران زعفرانیه کوچه 2',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':شهر محل فعالیت',
+                      value: 'تهران',
+                      context: context,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('اطلاعات خودرو', style: theme.textTheme.bodyMedium),
+                  AppSpacing.smallHorizontalSpacer,
+                  Image.asset(
+                    Assets.pngs.car.path,
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                  AppSpacing.mediumHorizontalSpacer,
+                ],
+              ),
+              Container(
+                margin: AppSpacing.largePadding,
+                padding: AppSpacing.largePadding,
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F4FF),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    _buildRowInformation(
+                      key: ':سیستم و تیپ خودرو',
+                      value: 'دنا پلاس',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':مدل(سال تولید خودرو)',
+                      value: '1385',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    _buildRowInformation(
+                      key: ':رنگ خودرو',
+                      value: 'مشکی',
+                      context: context,
+                    ),
+                    AppSpacing.xxLargeVerticalSpacer,
+                    Row(
+                      children: [
+                        IranPlate(
+                          cityCode: '68',
+                          firstPart: '85',
+                          letter: 'الف',
+                          secondPart: '751',
+                        ),
+                        const Spacer(),
+                        Text(':پلاک', style: theme.textTheme.bodySmall),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('مدارک ارسالی', style: theme.textTheme.bodyMedium),
+                  AppSpacing.smallHorizontalSpacer,
+                  Image.asset(
+                    Assets.pngs.document.path,
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                  AppSpacing.mediumHorizontalSpacer,
+                ],
+              ),
+              Container(
+                margin: AppSpacing.largePadding,
+                padding: AppSpacing.largePadding,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: theme.colorScheme.onPrimary),
+                ),
+                child: Column(
+                  children: [
+                    Text(':گواهی نامه', style: theme.textTheme.bodyMedium),
+                    AppSpacing.largeVerticalSpacer,
+                    Image.asset(Assets.pngs.frontCard.path),
+                    AppSpacing.largeVerticalSpacer,
+                    Image.asset(Assets.pngs.backCard.path),
+                  ],
+                ),
+              ),
+              Container(
+                margin: AppSpacing.largePadding,
+                padding: AppSpacing.largePadding,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: theme.colorScheme.onPrimary),
+                ),
+                child: Column(
+                  children: [
+                    Text(':اطلاعات بیمه', style: theme.textTheme.bodyMedium),
+                    AppSpacing.largeVerticalSpacer,
+                    Image.asset(Assets.pngs.media.path),
+                  ],
+                ),
+              ),
+              Container(
+                margin: AppSpacing.largePadding,
+                padding: AppSpacing.largePadding,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: theme.colorScheme.onPrimary),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      ':ویدیو احراز هویت',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    AppSpacing.largeVerticalSpacer,
+                    Image.asset(Assets.pngs.media.path),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomButton(
+                    action: () {},
+                    forAccept: true,
+                    isDisable: controller.isLoading.value,
+                  ),
+                  CustomButton(
+                    action: () {},
+                    forAccept: false,
+                    isDisable: controller.isLoading.value,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
 
   Widget _buildRowInformation({
     required String key,
     required String value,
     required BuildContext context,
   }) {
-    Size sizeScreen = MediaQuery.of(context).size;
     final theme = Theme.of(context);
     return Row(
       children: [
-        SizedBox(width: sizeScreen.width / 2),
         Expanded(
           child: Text(
             value,
@@ -187,19 +255,21 @@ class DriverLicenseDocumentPage extends StatelessWidget {
     );
   }
 
-  AppBar _appBar(ThemeData theme) => AppBar(
-    title: Text('مجید فرخ پور', style: theme.textTheme.bodyMedium),
-    leading: Container(
-      margin: const EdgeInsets.all(6),
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: theme.colorScheme.onPrimary,
-      ),
-      child: CircleAvatar(
-        backgroundImage: AssetImage(Assets.pngs.profile.path),
-        backgroundColor: theme.scaffoldBackgroundColor,
-      ),
+  AppBar _appBar({required ThemeData theme, required bool canPop}) => AppBar(
+    iconTheme:  IconThemeData(
+      color: theme.colorScheme.onPrimary,
     ),
+    actions: [
+      Container(
+        margin: const EdgeInsets.all(6),
+        padding: const EdgeInsets.all(3),
+        child: CircleAvatar(
+          backgroundImage: AssetImage(Assets.pngs.userIcon.path),
+          backgroundColor: theme.scaffoldBackgroundColor,
+        ),
+      ),
+      Text('مجید فرخ پور', style: theme.textTheme.bodyMedium),
+      AppSpacing.mediumHorizontalSpacer,
+    ],
   );
 }

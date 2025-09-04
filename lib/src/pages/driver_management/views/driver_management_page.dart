@@ -1,12 +1,13 @@
-import 'package:app_4030_admin/src/components/custom_data_table.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../components/drop_down.dart';
+import '../../../infrastructures/commons/app_controller.dart';
 import '../../../infrastructures/routes/route_names/route_names.dart';
 import '../../../infrastructures/utils/spacing.dart';
 import '../controller/driver_management_controller.dart';
+import '../model/enums/user_status.dart';
 import 'widgets/custom_driver_management_table.dart';
 
 class DriverManagementPage extends GetView<DriverManagementController> {
@@ -22,12 +23,8 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         leading: Container(
           margin: const EdgeInsets.all(3),
           padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: theme.colorScheme.onPrimary,
-          ),
           child: CircleAvatar(
-            backgroundImage: AssetImage(Assets.pngs.profile.path),
+            backgroundImage: AssetImage(Assets.pngs.userIcon.path),
             backgroundColor: theme.scaffoldBackgroundColor,
           ),
         ),
@@ -43,53 +40,6 @@ class DriverManagementPage extends GetView<DriverManagementController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          GridView.builder(
-            shrinkWrap: true,
-            itemCount: controller.reportsItems.length,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2.8,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemBuilder: (context, i) {
-              final item = controller.reportsItems[i];
-              return Container(
-                decoration: BoxDecoration(
-                  color: item['color'] as Color,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: item['backgroundColor'] as Color,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: AppSpacing.mediumPadding,
-                        child: Image.asset(
-                          item['iconPath'] as String,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                    Expanded(
-                      child: Text(
-                        item['title'] as String,
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          AppSpacing.mediumVerticalSpacer,
           Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
           AppSpacing.mediumVerticalSpacer,
           Column(
@@ -98,7 +48,7 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                 textAlign: TextAlign.end,
                 decoration: InputDecoration(
                   hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
-                  hintStyle: theme.textTheme.bodyMedium,
+                  hintStyle: theme.textTheme.bodySmall,
                   prefixIcon: Container(
                     margin: const EdgeInsets.all(6),
                     padding: const EdgeInsets.all(4),
@@ -140,13 +90,16 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('اعمال فیلتر', style: theme.textTheme.bodySmall),
-                  Flexible(
-                    child: CustomDropDown(
-                      items: [],
-                      getTitle: (item) => item,
-                      hint: 'همه وضعیت ها',
-                      onSelectItem: (final value) {},
-                      value: null,
+                  Obx(
+                    () => Flexible(
+                      child: CustomDropDown<UserStatus>(
+                        items: UserStatus.values,
+                        getTitle: (item) => item.title,
+                        hint: 'همه وضعیت ها',
+                        onSelectItem: (final value) =>
+                            controller.currentStatus.value = value!,
+                        value: controller.currentStatus.value,
+                      ),
                     ),
                   ),
                   DecoratedBox(
@@ -158,7 +111,9 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsetsGeometry.symmetric(vertical: AppSpacing.tinySpace),
+                      padding: EdgeInsetsGeometry.symmetric(
+                        vertical: AppSpacing.tinySpace,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -183,7 +138,7 @@ class DriverManagementPage extends GetView<DriverManagementController> {
             ],
           ),
           AppSpacing.mediumVerticalSpacer,
-          CustomDriverManagementTable(data: controller.mockTableData)
+          CustomDriverManagementTable(data: controller.mockTableData),
         ],
       ),
     ),
@@ -227,17 +182,17 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         icon: Icons.dashboard,
         label: 'داشبورد',
         theme: theme,
-        isSelected: controller.selectedId.value == 1,
+        isSelected: AppController.instance.drawerSelectedId.value == 1,
         onTap: () {
-          controller.selectedId.value = 1;
+          AppController.instance.drawerSelectedId.value = 1;
           Get.back();
           Get.toNamed(RouteNames.dashboard.uri);
         },
       ),
       _item(
-        isSelected: controller.selectedId.value == 2,
+        isSelected: AppController.instance.drawerSelectedId.value == 2,
         onTap: () {
-          controller.selectedId.value = 2;
+          AppController.instance.drawerSelectedId.value = 2;
           Get.back();
         },
         icon: Icons.people_alt_rounded,
@@ -245,30 +200,32 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         theme: theme,
       ),
       _item(
-        isSelected: controller.selectedId.value == 3,
+        isSelected: AppController.instance.drawerSelectedId.value == 3,
         onTap: () {
-          controller.selectedId.value = 3;
+          AppController.instance.drawerSelectedId.value = 3;
+          Get.back();
+          Get.toNamed(RouteNames.passengerManagement.uri);
         },
         icon: Icons.people_alt_rounded,
         label: 'مدیریت مسافر',
         theme: theme,
       ),
       _item(
-        isSelected: controller.selectedId.value == 4,
+        isSelected: AppController.instance.drawerSelectedId.value == 4,
         icon: Icons.analytics_outlined,
         label: 'مدریت مالی',
         theme: theme,
         onTap: () {
-          controller.selectedId.value = 4;
+          AppController.instance.drawerSelectedId.value = 4;
         },
       ),
       _item(
-        isSelected: controller.selectedId.value == 5,
+        isSelected: AppController.instance.drawerSelectedId.value == 5,
         icon: Icons.bookmark,
         label: 'مدیریت کد تخفیف',
         theme: theme,
         onTap: () {
-          controller.selectedId.value = 5;
+          AppController.instance.drawerSelectedId.value == 4;
         },
       ),
     ],

@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
-  final RxInt selectedId = RxInt(1);
   final mockData = [
     {
       "date": "1403/08/15",

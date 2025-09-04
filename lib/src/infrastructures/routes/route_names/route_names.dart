@@ -29,4 +29,9 @@ class RouteNames extends Route {
     RoutePaths.driverManagement + RoutePaths.driverLicenseDocument,
     RoutePaths.driverLicenseDocument,
   );
+  static const Route passengerManagement = Route(
+    RoutePaths.passengerManagement,
+    RoutePaths.passengerManagement,
+  );
+  static const Route auth = Route(RoutePaths.auth, RoutePaths.auth);
 }

@@ -54,10 +54,7 @@ class WeeklyChart extends StatelessWidget {
                       return const SizedBox();
                     return Text(
                       days[index],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium
                     );
                   },
                 ),

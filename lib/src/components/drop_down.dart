@@ -8,7 +8,6 @@ typedef OnChanged<T> = void Function(T?)?;
 class CustomDropDown<T> extends StatefulWidget {
   const CustomDropDown({
     super.key,
-    this.title,
     required this.items,
     required this.getTitle,
     required this.value,
@@ -18,7 +17,6 @@ class CustomDropDown<T> extends StatefulWidget {
     this.defaultIcon = false,
   });
 
-  final String? title;
   final List<T> items;
   final String? hint;
   final bool defaultIcon;
@@ -50,29 +48,18 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
 
   Widget _dropdown() => DropdownButtonHideUnderline(
     child: DropdownButton<T>(
+      isExpanded: true,
       elevation: 1,
       hint: widget.hint != null
-          ? Text(
-              '${widget.hint}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
-            )
+          ? Text('${widget.hint}', style: Theme.of(context).textTheme.bodySmall)
           : null,
-      padding: EdgeInsetsGeometry.symmetric(horizontal: AppSpacing.mediumSpace),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.mediumSpace),
       iconEnabledColor: Colors.black,
-      icon: widget.value != null && !widget.defaultIcon
-          ? InkWell(
-              onTap: widget.onClear,
-              child: Icon(
-                Icons.clear,
-                size: AppSpacing.xLargeSpace,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            )
-          : Icon(
-              Icons.keyboard_arrow_down,
-              size: AppSpacing.xLargeSpace,
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
+      icon: Icon(
+        Icons.keyboard_arrow_down,
+        size: AppSpacing.xLargeSpace,
+        color: Theme.of(context).colorScheme.onSecondary,
+      ),
       menuMaxHeight: 200,
       dropdownColor: Theme.of(context).scaffoldBackgroundColor,
       value: widget.value,
@@ -86,11 +73,10 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
           .map<DropdownMenuItem<T>>(
             (T value) => DropdownMenuItem<T>(
               value: value,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: Center(
                 child: Text(
                   widget.getTitle(value),
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
                 ),
               ),
             ),

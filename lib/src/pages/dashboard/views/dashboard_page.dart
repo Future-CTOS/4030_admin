@@ -1,3 +1,4 @@
+import 'package:app_4030_admin/src/infrastructures/commons/app_controller.dart';
 import 'package:app_4030_admin/src/infrastructures/routes/route_names/route_names.dart';
 import 'package:app_4030_admin/src/pages/dashboard/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +139,7 @@ class DashboardPage extends GetView<DashboardController> {
               AppSpacing.largeVerticalSpacer,
               Text('فعالیت های اخیر', style: theme.textTheme.bodyMedium),
               AppSpacing.smallVerticalSpacer,
-              CustomDataTable(data: controller.mockData),
+              // CustomDataTable(data: controller.mockData),
             ],
           ),
         ),
@@ -184,16 +185,16 @@ class DashboardPage extends GetView<DashboardController> {
         icon: Icons.dashboard,
         label: 'داشبورد',
         theme: theme,
-        isSelected: controller.selectedId.value == 1,
+        isSelected: AppController.instance.drawerSelectedId.value == 1,
         onTap: () {
-          controller.selectedId.value = 1;
+          AppController.instance.drawerSelectedId.value = 1;
           Get.back();
         },
       ),
       _item(
-        isSelected: controller.selectedId.value == 2,
+        isSelected: AppController.instance.drawerSelectedId.value == 2,
         onTap: () {
-          controller.selectedId.value = 2;
+          AppController.instance.drawerSelectedId.value = 2;
           Get.back();
           Get.toNamed(RouteNames.driverManagement.uri);
         },
@@ -202,30 +203,32 @@ class DashboardPage extends GetView<DashboardController> {
         theme: theme,
       ),
       _item(
-        isSelected: controller.selectedId.value == 3,
+        isSelected: AppController.instance.drawerSelectedId.value == 3,
         onTap: () {
-          controller.selectedId.value = 3;
+          AppController.instance.drawerSelectedId.value = 3;
+          Get.back();
+          Get.toNamed(RouteNames.passengerManagement.uri);
         },
         icon: Icons.people_alt_rounded,
         label: 'مدیریت مسافر',
         theme: theme,
       ),
       _item(
-        isSelected: controller.selectedId.value == 4,
+        isSelected: AppController.instance.drawerSelectedId.value == 4,
         icon: Icons.analytics_outlined,
         label: 'مدریت مالی',
         theme: theme,
         onTap: () {
-          controller.selectedId.value = 4;
+          AppController.instance.drawerSelectedId.value = 4;
         },
       ),
       _item(
-        isSelected: controller.selectedId.value == 5,
+        isSelected: AppController.instance.drawerSelectedId.value == 5,
         icon: Icons.bookmark,
         label: 'مدیریت کد تخفیف',
         theme: theme,
         onTap: () {
-          controller.selectedId.value = 5;
+          AppController.instance.drawerSelectedId.value == 4;
         },
       ),
     ],
@@ -322,19 +325,18 @@ class DashboardHeader extends StatelessWidget {
               ),
             ],
           ),
-          padding: const EdgeInsets.all(12),
+          padding: AppSpacing.mediumPadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Flexible(
                       child: Text(
                         item['title'] as String,
-                        style: theme.textTheme.bodyMedium,
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                     Flexible(
@@ -350,7 +352,6 @@ class DashboardHeader extends StatelessWidget {
                 item['icon'] as IconData,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              const SizedBox(width: 12),
             ],
           ),
         );
