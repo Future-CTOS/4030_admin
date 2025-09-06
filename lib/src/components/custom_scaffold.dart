@@ -72,12 +72,12 @@ class CustomScaffold extends StatelessWidget {
       children: [
         _header(),
         Expanded(child: _menuItems()),
-        _logout(),
+        _logout(context),
       ],
     ),
   );
 
-  Widget _logout() => Padding(
+  Widget _logout(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: AppSpacing.largeSpace),
     child: Column(
       children: [
@@ -90,7 +90,12 @@ class CustomScaffold extends StatelessWidget {
             children: [
               const Icon(Icons.logout_outlined, color: Colors.white),
               AppSpacing.mediumHorizontalSpacer,
-              Text('خروج'),
+              Text(
+                'خروج',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+              ),
             ],
           ),
         ),
@@ -234,7 +239,7 @@ class CustomScaffold extends StatelessWidget {
         ),
       ),
       AppSpacing.mediumHorizontalSpacer,
-      Text('تاکسی 4030', style: Theme.of(context).textTheme.titleLarge),
+      Text('تاکسی 4030', style: Theme.of(context).textTheme.bodyLarge),
     ],
   );
 }

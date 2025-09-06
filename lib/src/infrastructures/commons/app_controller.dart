@@ -9,4 +9,5 @@ class AppController {
   RxInt drawerSelectedId = 1.obs;
 
   String? phoneNumber;
+  String? token;
 }

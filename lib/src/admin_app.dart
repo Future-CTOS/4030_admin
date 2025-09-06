@@ -16,6 +16,7 @@ class AdminApp extends StatelessWidget {
     initialRoute: RouteNames.splashScreen.uri,
     theme: AppTheme.lightTheme,
     getPages: RoutePages.routes,
+    locale: const Locale('fa', 'IR'),
     debugShowCheckedModeBanner: false,
     themeMode: themeController.themeMode.value,
   );

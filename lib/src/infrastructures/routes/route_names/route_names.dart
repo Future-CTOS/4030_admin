@@ -33,5 +33,11 @@ class RouteNames extends Route {
     RoutePaths.passengerManagement,
     RoutePaths.passengerManagement,
   );
-  static const Route auth = Route(RoutePaths.auth, RoutePaths.auth);
+
+  static const Route login = Route(RoutePaths.login, RoutePaths.login);
+
+  static const Route driverTrips = Route(
+    RoutePaths.driverManagement + RoutePaths.driverTrips,
+    RoutePaths.driverTrips,
+  );
 }

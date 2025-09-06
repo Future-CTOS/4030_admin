@@ -19,7 +19,7 @@ class SplashScreenPageController extends GetxController {
 
   Future<bool> _checkConnection() async {
     await Future<void>.delayed(3000.milliseconds);
-    Get.offAllNamed(RouteNames.dashboard.uri);
+    Get.offAllNamed(RouteNames.login.uri);
     return true;
   }
 }

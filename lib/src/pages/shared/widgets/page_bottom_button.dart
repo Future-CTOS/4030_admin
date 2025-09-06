@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../components/custom_loading.dart';
 import '../../../infrastructures/utils/constants.dart';
 import '../../../infrastructures/utils/spacing.dart';
@@ -22,7 +21,7 @@ class PageBottomButton extends StatelessWidget {
   final bool transparentBackground;
 
   @override
-  Widget build(BuildContext context) => Container(
+  build(BuildContext context) => Container(
     width: double.infinity,
     color: transparentBackground ? Colors.transparent : Colors.white,
     padding: EdgeInsetsGeometry.symmetric(
@@ -33,7 +32,7 @@ class PageBottomButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: isActive
             ? Theme.of(context).primaryColor
-            : Theme.of(context).colorScheme.secondary,
+            : Theme.of(context).colorScheme.onSecondary,
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 14),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Constants.shapeRadius),
@@ -48,8 +47,8 @@ class PageBottomButton extends StatelessWidget {
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: isActive
-                  ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.onSecondary,
+                  ? Theme.of(context).colorScheme.surface
+                  : null,
             ),
           ),
           if (isLoading) ...[

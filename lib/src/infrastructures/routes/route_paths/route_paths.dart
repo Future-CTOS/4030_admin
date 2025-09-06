@@ -4,5 +4,6 @@ class RoutePaths {
   static const String driverManagement = '/driver-management';
   static const String passengerManagement = '/passenger-management';
   static const String driverLicenseDocument = '/driver-license-document';
-  static const String auth = '/auth';
+  static const String login = '/login';
+  static const String driverTrips = '/driver-trips';
 }

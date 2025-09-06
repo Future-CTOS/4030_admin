@@ -6,7 +6,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'YekanBakh',
     brightness: Brightness.light,
-    primaryColor: AppColors.primaryColor.shade200,
+    primaryColor: AppColors.primaryColor.shade300,
     scaffoldBackgroundColor: AppColors.backgroundColor,
     drawerTheme: DrawerThemeData(
       backgroundColor: AppColors.darkBackgroundColor,
@@ -23,10 +23,11 @@ class AppTheme {
       ),
     ),
     colorScheme: ColorScheme.light(
-      primary: AppColors.primaryColor.shade200,
-      surfaceContainer: AppColors.primaryColor.shade900,
-      secondary: AppColors.primaryColor.shade500,
+      primary: AppColors.primaryColor.shade300,
+      surfaceContainer: AppColors.primaryColor.shade100,
+      secondary: AppColors.primaryColor.shade200,
       onSecondary: AppColors.secondaryColor.shade500,
+      onSurfaceVariant: AppColors.secondaryColor.shade400,
       onPrimary: AppColors.textColor,
       error: AppColors.errorColor,
       onSurface: AppColors.successColor,

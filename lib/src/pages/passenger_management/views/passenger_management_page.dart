@@ -38,54 +38,49 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
     padding: AppSpacing.largePadding,
     child: SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
           AppSpacing.mediumVerticalSpacer,
-          Column(
-            children: [
-              TextField(
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
-                  hintStyle: theme.textTheme.bodySmall,
-                  prefixIcon: Container(
-                    margin: const EdgeInsets.all(6),
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset(Assets.pngs.search.path),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.secondary,
-                      width: 0.3,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSecondary,
-                      width: 0.3,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSecondary,
-                      width: 0.3,
-                    ),
-                  ),
+          TextField(
+            decoration: InputDecoration(
+              hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
+              hintStyle: theme.textTheme.bodySmall,
+              prefixIcon: Container(
+                margin: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.secondary,
+                  shape: BoxShape.circle,
+                ),
+                child: Image.asset(Assets.pngs.search.path),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.secondary,
+                  width: 0.3,
                 ),
               ),
-            ],
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.onSecondary,
+                  width: 0.3,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.onSecondary,
+                  width: 0.3,
+                ),
+              ),
+            ),
           ),
           AppSpacing.mediumVerticalSpacer,
           _customTable(theme),
@@ -218,7 +213,6 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
       right: AppSpacing.giantSpace,
     ),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text('پنل مدیریت', style: theme.textTheme.labelMedium),
         AppSpacing.mediumHorizontalSpacer,

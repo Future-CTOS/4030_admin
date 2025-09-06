@@ -56,8 +56,6 @@ class CustomDriverManagementTable extends StatelessWidget {
                   _buildHeaderCell("وضعیت"),
                 ],
               ),
-
-              // Data Rows
               ...data.map((row) {
                 return TableRow(
                   children: [
@@ -65,7 +63,17 @@ class CustomDriverManagementTable extends StatelessWidget {
                     _buildCell(row["name"] ?? ""),
                     _buildCell(row["phoneNumber"] ?? ""),
                     _buildCell(row["nationalCode"] ?? ""),
-                    _buildCell(row["trips"] ?? ""),
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          row["trips"] ?? "",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      onTap: () =>
+                          Get.toNamed(RouteNames.driverTrips.uri),
+                    ),
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -74,7 +82,8 @@ class CustomDriverManagementTable extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      onTap: () => Get.toNamed(RouteNames.driverLicenseDocument.uri),
+                      onTap: () =>
+                          Get.toNamed(RouteNames.driverLicenseDocument.uri),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(6),

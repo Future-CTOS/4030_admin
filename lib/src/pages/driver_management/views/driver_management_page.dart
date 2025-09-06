@@ -38,7 +38,7 @@ class DriverManagementPage extends GetView<DriverManagementController> {
     padding: AppSpacing.largePadding,
     child: SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
           AppSpacing.mediumVerticalSpacer,

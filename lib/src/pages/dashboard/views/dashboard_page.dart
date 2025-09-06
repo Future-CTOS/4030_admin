@@ -6,7 +6,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 
 import '../../../../gen/assets.gen.dart';
-import '../../../components/custom_data_table.dart';
 import '../../../infrastructures/utils/spacing.dart';
 import 'widgets/weekly_chart.dart';
 
@@ -38,7 +37,7 @@ class DashboardPage extends GetView<DashboardController> {
         padding: AppSpacing.largePadding,
         child: SafeArea(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DashboardHeader(theme: theme),
               AppSpacing.largeVerticalSpacer,
@@ -70,7 +69,7 @@ class DashboardPage extends GetView<DashboardController> {
                         height: 10,
                         width: 10,
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainer,
+                          color: theme.primaryColor,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -84,27 +83,6 @@ class DashboardPage extends GetView<DashboardController> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('%40', style: theme.textTheme.bodySmall),
-                  AppSpacing.smallHorizontalSpacer,
-                  Text('سواری', style: theme.textTheme.bodySmall),
-                  AppSpacing.smallHorizontalSpacer,
-                  Container(
-                    height: 10,
-                    width: 10,
-                    decoration: BoxDecoration(
-                      color: theme.primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('%20', style: theme.textTheme.bodySmall),
-                  AppSpacing.smallHorizontalSpacer,
-                  Text('موتور', style: theme.textTheme.bodySmall),
-                  AppSpacing.smallHorizontalSpacer,
                   Container(
                     height: 10,
                     width: 10,
@@ -113,15 +91,32 @@ class DashboardPage extends GetView<DashboardController> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('%40', style: theme.textTheme.bodySmall),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('سواری', style: theme.textTheme.bodySmall),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('%35', style: theme.textTheme.bodySmall),
+                  Container(
+                    height: 10,
+                    width: 10,
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
                   AppSpacing.smallHorizontalSpacer,
-                  Text('وانت', style: theme.textTheme.bodySmall),
+                  Text('%20', style: theme.textTheme.bodySmall),
                   AppSpacing.smallHorizontalSpacer,
+                  Text('موتور', style: theme.textTheme.bodySmall),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Container(
                     height: 10,
                     width: 10,
@@ -130,6 +125,10 @@ class DashboardPage extends GetView<DashboardController> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('%35', style: theme.textTheme.bodySmall),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('وانت', style: theme.textTheme.bodySmall),
                 ],
               ),
               AppSpacing.largeVerticalSpacer,
@@ -137,8 +136,8 @@ class DashboardPage extends GetView<DashboardController> {
               AppSpacing.largeVerticalSpacer,
               AppSpacing.largeVerticalSpacer,
               AppSpacing.largeVerticalSpacer,
-              Text('فعالیت های اخیر', style: theme.textTheme.bodyMedium),
-              AppSpacing.smallVerticalSpacer,
+              // Text('فعالیت های اخیر', style: theme.textTheme.bodyMedium),
+              // AppSpacing.smallVerticalSpacer,
               // CustomDataTable(data: controller.mockData),
             ],
           ),
@@ -315,7 +314,7 @@ class DashboardHeader extends StatelessWidget {
         final item = items[i];
         return Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(

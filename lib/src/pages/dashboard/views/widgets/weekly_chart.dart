@@ -6,8 +6,15 @@ class WeeklyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final days = ["شنبه", "یکشنبه", "دوشنیه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
-
+    final days = [
+      "شنبه",
+      "یکشنبه",
+      "دوشنیه",
+      "سه شنبه",
+      "چهارشنبه",
+      "پنجشنبه",
+      "جمعه",
+    ];
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Container(
@@ -50,11 +57,14 @@ class WeeklyChart extends StatelessWidget {
                   interval: 1,
                   getTitlesWidget: (value, meta) {
                     int index = value.toInt();
-                    if (index < 0 || index >= days.length)
+                    if (index < 0 || index >= days.length) {
                       return const SizedBox();
+                    }
                     return Text(
                       days[index],
-                      style: Theme.of(context).textTheme.bodyMedium
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: 10
+                      ),
                     );
                   },
                 ),

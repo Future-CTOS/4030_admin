@@ -28,14 +28,13 @@ class DriverLicenseDocumentPage
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('اطلاعات هویتی', style: theme.textTheme.bodyMedium),
+                  AppSpacing.mediumHorizontalSpacer,
                   Image.asset(
                     Assets.pngs.profile.path,
                     color: theme.colorScheme.onPrimary,
                   ),
-                  AppSpacing.mediumHorizontalSpacer,
+                  Text('اطلاعات هویتی', style: theme.textTheme.bodyMedium),
                 ],
               ),
               Container(
@@ -48,49 +47,49 @@ class DriverLicenseDocumentPage
                 child: Column(
                   children: [
                     _buildRowInformation(
-                      key: ':نام',
+                      key: 'نام:',
                       value: 'بهراد',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':نام خانوادگی',
+                      key: 'نام خانوادگی:',
                       value: 'محمدی',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':نام پدر',
+                      key: 'نام پدر:',
                       value: 'محمد',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':شماره شناسنامه',
+                      key: 'شماره شناسنامه:',
                       value: '0123456789',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':تاریخ تولد',
+                      key: 'تاریخ تولد:',
                       value: '1385/10/10',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':کد ملی',
+                      key: 'کد ملی:',
                       value: '0123456789',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':آدرس',
+                      key: 'آدرس:',
                       value: 'تهران زعفرانیه کوچه 2',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':شهر محل فعالیت',
+                      key: 'شهر محل فعالیت:',
                       value: 'تهران',
                       context: context,
                     ),
@@ -98,14 +97,13 @@ class DriverLicenseDocumentPage
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('اطلاعات خودرو', style: theme.textTheme.bodyMedium),
-                  AppSpacing.smallHorizontalSpacer,
                   Image.asset(
                     Assets.pngs.car.path,
                     color: theme.colorScheme.onPrimary,
                   ),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('اطلاعات خودرو', style: theme.textTheme.bodyMedium),
                   AppSpacing.mediumHorizontalSpacer,
                 ],
               ),
@@ -119,47 +117,46 @@ class DriverLicenseDocumentPage
                 child: Column(
                   children: [
                     _buildRowInformation(
-                      key: ':سیستم و تیپ خودرو',
+                      key: 'سیستم و تیپ خودرو:',
                       value: 'دنا پلاس',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':مدل(سال تولید خودرو)',
+                      key: 'مدل(سال تولید خودرو):',
                       value: '1385',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     _buildRowInformation(
-                      key: ':رنگ خودرو',
+                      key: 'رنگ خودرو:',
                       value: 'مشکی',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
                     Row(
                       children: [
+                        Text('پلاک:', style: theme.textTheme.bodySmall),
+                        const Spacer(),
                         IranPlate(
                           cityCode: '68',
                           firstPart: '85',
                           letter: 'الف',
                           secondPart: '751',
                         ),
-                        const Spacer(),
-                        Text(':پلاک', style: theme.textTheme.bodySmall),
                       ],
                     ),
                   ],
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('مدارک ارسالی', style: theme.textTheme.bodyMedium),
-                  AppSpacing.smallHorizontalSpacer,
                   Image.asset(
                     Assets.pngs.document.path,
                     color: theme.colorScheme.onPrimary,
                   ),
+                  AppSpacing.smallHorizontalSpacer,
+                  Text('مدارک ارسالی', style: theme.textTheme.bodyMedium),
                   AppSpacing.mediumHorizontalSpacer,
                 ],
               ),
@@ -246,20 +243,19 @@ class DriverLicenseDocumentPage
       children: [
         Expanded(
           child: Text(
-            value,
+            key,
             style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12),
           ),
         ),
-        Text(key, style: theme.textTheme.labelSmall),
+        Text(value, style: theme.textTheme.labelSmall),
       ],
     );
   }
 
   AppBar _appBar({required ThemeData theme, required bool canPop}) => AppBar(
-    iconTheme:  IconThemeData(
-      color: theme.colorScheme.onPrimary,
-    ),
+    iconTheme: IconThemeData(color: theme.colorScheme.onPrimary),
     actions: [
+      Text('مجید فرخ پور', style: theme.textTheme.bodyMedium),
       Container(
         margin: const EdgeInsets.all(6),
         padding: const EdgeInsets.all(3),
@@ -268,7 +264,6 @@ class DriverLicenseDocumentPage
           backgroundColor: theme.scaffoldBackgroundColor,
         ),
       ),
-      Text('مجید فرخ پور', style: theme.textTheme.bodyMedium),
       AppSpacing.mediumHorizontalSpacer,
     ],
   );

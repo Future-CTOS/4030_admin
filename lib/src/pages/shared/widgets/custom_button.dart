@@ -36,7 +36,12 @@ class CustomButton extends StatelessWidget {
           onPressed: action,
           child: isDisable!
               ? const CustomLoading()
-              : Text(forAccept ? 'تایید اطلاعات' : 'رد اطلاعات'),
+              : Text(
+                  forAccept ? 'تایید اطلاعات' : 'رد اطلاعات',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.surface,
+                  ),
+                ),
         ),
       ),
     );
