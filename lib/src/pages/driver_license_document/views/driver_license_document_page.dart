@@ -170,7 +170,7 @@ class DriverLicenseDocumentPage
                 ),
                 child: Column(
                   children: [
-                    Text(':گواهی نامه', style: theme.textTheme.bodyMedium),
+                    Text('گواهی نامه:', style: theme.textTheme.bodyMedium),
                     AppSpacing.largeVerticalSpacer,
                     Image.asset(Assets.pngs.frontCard.path),
                     AppSpacing.largeVerticalSpacer,
@@ -188,7 +188,7 @@ class DriverLicenseDocumentPage
                 ),
                 child: Column(
                   children: [
-                    Text(':اطلاعات بیمه', style: theme.textTheme.bodyMedium),
+                    Text('اطلاعات بیمه:', style: theme.textTheme.bodyMedium),
                     AppSpacing.largeVerticalSpacer,
                     Image.asset(Assets.pngs.media.path),
                   ],
@@ -205,7 +205,7 @@ class DriverLicenseDocumentPage
                 child: Column(
                   children: [
                     Text(
-                      ':ویدیو احراز هویت',
+                      'ویدیو احراز هویت:',
                       style: theme.textTheme.bodyMedium,
                     ),
                     AppSpacing.largeVerticalSpacer,

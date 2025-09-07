@@ -2,8 +2,10 @@ import 'package:app_4030_admin/src/infrastructures/routes/route_names/route_name
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../model/view_models/driver_management_view_model.dart';
+
 class CustomDriverManagementTable extends StatelessWidget {
-  final List<Map<String, String>> data;
+  final List<DriverManagementViewModel> data;
 
   const CustomDriverManagementTable({super.key, required this.data});
 
@@ -47,7 +49,7 @@ class CustomDriverManagementTable extends StatelessWidget {
               TableRow(
                 decoration: BoxDecoration(color: Color(0xfff5f5f5)),
                 children: [
-                  _buildHeaderCell("تاریخ ثبت‌نام"),
+                  _buildHeaderCell("تاریخ ثبت‌ نام"),
                   _buildHeaderCell("نام"),
                   _buildHeaderCell("شماره موبایل"),
                   _buildHeaderCell("کد ملی"),
@@ -59,28 +61,21 @@ class CustomDriverManagementTable extends StatelessWidget {
               ...data.map((row) {
                 return TableRow(
                   children: [
-                    _buildCell(row["date"] ?? ""),
-                    _buildCell(row["name"] ?? ""),
-                    _buildCell(row["phoneNumber"] ?? ""),
-                    _buildCell(row["nationalCode"] ?? ""),
+                    _buildCell(row.jalaliDate),
+                    _buildCell(row.name),
+                    _buildCell(row.phone),
+                    _buildCell(row.nationalCode),
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: Text(
-                          row["trips"] ?? "",
-                          textAlign: TextAlign.center,
-                        ),
+                        child: Text('سفر ها', textAlign: TextAlign.center),
                       ),
-                      onTap: () =>
-                          Get.toNamed(RouteNames.driverTrips.uri),
+                      onTap: () => Get.toNamed(RouteNames.driverTrips.uri),
                     ),
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: Text(
-                          row["Documents"] ?? "",
-                          textAlign: TextAlign.center,
-                        ),
+                        child: Text('مدارک', textAlign: TextAlign.center),
                       ),
                       onTap: () =>
                           Get.toNamed(RouteNames.driverLicenseDocument.uri),
@@ -93,11 +88,11 @@ class CustomDriverManagementTable extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: _getStatusColor(row["status"] ?? ""),
+                          color: _getStatusColor(row.status),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          row["status"] ?? "",
+                          row.status,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium,
                         ),

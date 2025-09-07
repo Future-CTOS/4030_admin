@@ -1,10 +1,70 @@
 import 'package:app_4030_admin/gen/assets.gen.dart';
 import 'package:app_4030_admin/src/pages/driver_management/model/enums/user_status.dart';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../infrastructures/models/enums/status_enum.dart';
+import '../../../infrastructures/utils/utils.dart';
+import '../model/view_models/driver_management_view_model.dart';
+import '../repositories/driver_management_repository.dart';
+
 class DriverManagementController extends GetxController {
   final Rx<UserStatus> currentStatus = Rx<UserStatus>(UserStatus.allStatus);
+  final RxBool isLoading = false.obs;
+  final _repository = DriverManagementRepository();
+  List<DriverManagementViewModel> driverManagements = [];
+
+  Future<void> _fetchAllDriver(BuildContext context) async {
+    isLoading.value = true;
+    final Either<String, List<DriverManagementViewModel>> result =
+        await _repository.fetchAllDriver();
+    isLoading.value = false;
+    result.fold(
+      (final errorMessage) => Utils.showSnackBar(
+        context,
+        text: errorMessage,
+        status: StatusEnum.danger,
+      ),
+      (final response) {
+        driverManagements = response;
+      },
+    );
+  }
+
+  void onSelectedStatusItem({
+    required final UserStatus? status,
+    required BuildContext context,
+  }) {
+    currentStatus.value = status!;
+    if (currentStatus.value == UserStatus.allStatus) {
+      _fetchAllDriver(context);
+      return;
+    }
+    _fetchFilteredDriver(status: status, context: context);
+  }
+
+  Future<void> _fetchFilteredDriver({
+    required BuildContext context,
+    required UserStatus status,
+  }) async {
+    driverManagements.clear();
+    isLoading.value = true;
+    final Either<String, List<DriverManagementViewModel>> result =
+        await _repository.fetchFilteredDriver(status);
+    isLoading.value = false;
+    result.fold(
+      (final errorMessage) => Utils.showSnackBar(
+        context,
+        text: errorMessage,
+        status: StatusEnum.danger,
+      ),
+      (final response) {
+        driverManagements = response;
+      },
+    );
+  }
+
   final reportsItems = [
     {
       'title': 'تاییده شده 9',
@@ -36,422 +96,9 @@ class DriverManagementController extends GetxController {
     },
   ];
 
-  final mockTableData = [
-    {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "علی پور حسینی",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "مهران مدیری",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1404/02/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "حسین ملکی پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280778577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "در انتظار",
-    },
-    {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-    {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },  {
-      "name": "مجید فرخ پور",
-      "phoneNumber": "09013924517",
-      "nationalCode": "2280124577",
-      "date": "1403/08/15",
-      "trips": "مشاهده",
-      "Documents": "مشاهده",
-      "status": "تایید شده",
-    },
-  ];
+  @override
+  void onReady() {
+    super.onReady();
+    _fetchAllDriver(Get.context!);
+  }
 }

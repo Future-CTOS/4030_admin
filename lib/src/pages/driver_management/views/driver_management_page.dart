@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:shimmer/shimmer.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../components/drop_down.dart';
 import '../../../infrastructures/commons/app_controller.dart';
@@ -30,119 +30,133 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         ),
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(child: _content(theme)),
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return _shimmerWidget();
+          } else {
+            return _content(theme: theme, context: context);
+          }
+        }),
+      ),
     );
   }
 
-  Widget _content(ThemeData theme) => Padding(
-    padding: AppSpacing.largePadding,
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
-          AppSpacing.mediumVerticalSpacer,
-          Column(
+  Widget _content({required ThemeData theme, required BuildContext context}) =>
+      Padding(
+        padding: AppSpacing.largePadding,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
-                  hintStyle: theme.textTheme.bodySmall,
-                  prefixIcon: Container(
-                    margin: const EdgeInsets.all(6),
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset(Assets.pngs.search.path),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.secondary,
-                      width: 0.3,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSecondary,
-                      width: 0.3,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSecondary,
-                      width: 0.3,
-                    ),
-                  ),
-                ),
-              ),
+              Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
               AppSpacing.mediumVerticalSpacer,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
-                  Text('اعمال فیلتر', style: theme.textTheme.bodySmall),
-                  Obx(
-                    () => Flexible(
-                      child: CustomDropDown<UserStatus>(
-                        items: UserStatus.values,
-                        getTitle: (item) => item.title,
-                        hint: 'همه وضعیت ها',
-                        onSelectItem: (final value) =>
-                            controller.currentStatus.value = value!,
-                        value: controller.currentStatus.value,
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
+                      hintStyle: theme.textTheme.bodySmall,
+                      prefixIcon: Container(
+                        margin: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.secondary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(Assets.pngs.search.path),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                          width: 0.3,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSecondary,
+                          width: 0.3,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSecondary,
+                          width: 0.3,
+                        ),
                       ),
                     ),
                   ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                        color: theme.colorScheme.onSecondary,
-                        width: 0.3,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.symmetric(
-                        vertical: AppSpacing.tinySpace,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(6),
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.secondary,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(Assets.pngs.filter.path),
+                  AppSpacing.mediumVerticalSpacer,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('اعمال فیلتر', style: theme.textTheme.bodySmall),
+                      Obx(
+                        () => Flexible(
+                          child: CustomDropDown<UserStatus>(
+                            items: UserStatus.values,
+                            getTitle: (item) => item.title,
+                            hint: 'همه وضعیت ها',
+                            onSelectItem: (final status) =>
+                                controller.onSelectedStatusItem(
+                                  context: context,
+                                  status: status,
+                                ),
+                            value: controller.currentStatus.value,
                           ),
-                          AppSpacing.mediumHorizontalSpacer,
-                          Text('وسیله نقلیه', style: theme.textTheme.bodySmall),
-                          SizedBox(width: 12),
-                        ],
+                        ),
                       ),
-                    ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(
+                            color: theme.colorScheme.onSecondary,
+                            width: 0.3,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            vertical: AppSpacing.tinySpace,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.secondary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.asset(Assets.pngs.filter.path),
+                              ),
+                              AppSpacing.mediumHorizontalSpacer,
+                              Text(
+                                'وسیله نقلیه',
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              SizedBox(width: 12),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              AppSpacing.mediumVerticalSpacer,
+              CustomDriverManagementTable(data: controller.driverManagements),
             ],
           ),
-          AppSpacing.mediumVerticalSpacer,
-          CustomDriverManagementTable(data: controller.mockTableData),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   Widget _endDrawerWidget(BuildContext context) => Drawer(
     child: Column(
@@ -277,6 +291,25 @@ class DriverManagementPage extends GetView<DriverManagementController> {
           backgroundColor: theme.scaffoldBackgroundColor,
         ),
       ],
+    ),
+  );
+
+  Widget _shimmerWidget() => Shimmer.fromColors(
+    baseColor: Colors.grey.shade300,
+    highlightColor: Colors.grey.shade100,
+    child: SingleChildScrollView(
+      padding: AppSpacing.largePadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(8, (index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            height: 20,
+            width: double.infinity,
+            color: Colors.white,
+          );
+        }),
+      ),
     ),
   );
 }
