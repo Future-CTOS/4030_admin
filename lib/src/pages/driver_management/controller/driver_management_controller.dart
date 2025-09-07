@@ -54,6 +54,7 @@ class DriverManagementController extends GetxController {
         await _repository.fetchFilteredDriver(status);
     isLoading.value = false;
     result.fold(
+
       (final errorMessage) => Utils.showSnackBar(
         context,
         text: errorMessage,
