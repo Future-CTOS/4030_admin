@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../infrastructures/utils/spacing.dart';
 
 typedef ItemAsString<T> = String Function(T item);
@@ -14,6 +15,7 @@ class CustomDropDown<T> extends StatefulWidget {
     this.onSelectItem,
     this.hint,
     this.onClear,
+    this.icon,
     this.defaultIcon = false,
   });
 
@@ -23,6 +25,7 @@ class CustomDropDown<T> extends StatefulWidget {
   final ItemAsString<T> getTitle;
   final OnChanged<T>? onSelectItem;
   final T? value;
+  final Widget? icon;
   final VoidCallback? onClear;
 
   @override
@@ -51,15 +54,22 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
       isExpanded: true,
       elevation: 1,
       hint: widget.hint != null
-          ? Text('${widget.hint}', style: Theme.of(context).textTheme.bodySmall)
+          ? Center(
+              child: Text(
+                '${widget.hint}',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            )
           : null,
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.mediumSpace),
       iconEnabledColor: Colors.black,
-      icon: Icon(
-        Icons.keyboard_arrow_down,
-        size: AppSpacing.xLargeSpace,
-        color: Theme.of(context).colorScheme.onSecondary,
-      ),
+      icon:
+          widget.icon ??
+          Icon(
+            Icons.keyboard_arrow_down,
+            size: AppSpacing.xLargeSpace,
+            color: Theme.of(context).colorScheme.onSecondary,
+          ),
       menuMaxHeight: 200,
       dropdownColor: Theme.of(context).scaffoldBackgroundColor,
       value: widget.value,
@@ -76,7 +86,9 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
               child: Center(
                 child: Text(
                   widget.getTitle(value),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(fontSize: 12),
                 ),
               ),
             ),

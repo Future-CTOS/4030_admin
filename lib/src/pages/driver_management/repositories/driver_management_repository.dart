@@ -5,6 +5,7 @@ import 'package:either_dart/either.dart';
 import 'package:http/http.dart' as http;
 import '../../../infrastructures/commons/repository_urls.dart';
 import '../../../infrastructures/commons/token_info.dart';
+import '../model/enums/current_vehicle.dart';
 import '../model/view_models/driver_management_view_model.dart';
 
 class DriverManagementRepository {
@@ -38,20 +39,22 @@ class DriverManagementRepository {
     }
   }
 
-  Future<Either<String, List<DriverManagementViewModel>>> fetchFilteredDriver(
-    UserStatus status,
-  ) async {
+  Future<Either<String, List<DriverManagementViewModel>>> fetchFilteredDriver({
+    required UserStatus? userStatus,
+    required VehicleType? vehicleType,
+  }) async {
     try {
       int? statusCode;
       final http.Response response = await http.get(
         headers: TokenInfo.authHeader(),
-        RepositoryUrls.filteredDrivers(status),
+        RepositoryUrls.filteredDrivers(
+          userStatus: userStatus,
+          vehicleType: vehicleType,
+        ),
       );
       statusCode = response.statusCode;
       if (statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
-        print('in filted url');
-        print(jsonData);
         final List<DriverManagementViewModel> driverViewModel = jsonData
             .map(
               (e) =>

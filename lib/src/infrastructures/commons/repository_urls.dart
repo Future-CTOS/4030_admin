@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:app_4030_admin/src/pages/driver_management/model/enums/current_vehicle.dart';
 
 import '../../pages/driver_management/model/enums/user_status.dart';
 
@@ -8,13 +8,34 @@ class RepositoryUrls {
   static const String _baseUrl = 'https://taxi-4030.ir/admin';
   static const String _auth = '/auth';
   static const String _drivers = '/drivers';
+  static const String _users = '/users';
+  static const String _passenger = '/passengers';
 
-  static Uri filteredDrivers(UserStatus status) =>
-      Uri.parse('$_baseUrl$_drivers?status=${status.value}');
+  static Uri filteredDrivers({
+    required UserStatus? userStatus,
+    required VehicleType? vehicleType,
+  }) {
+    if (userStatus == null && vehicleType != null) {
+      return Uri.parse('$_baseUrl$_drivers?type=${vehicleType.value}');
+    }
+
+    if (userStatus != null && vehicleType == null) {
+      return Uri.parse('$_baseUrl$_drivers?status=${userStatus.value}');
+    }
+
+    return Uri.parse(
+      '$_baseUrl$_drivers?status=${userStatus!.value}&type=${vehicleType!.value}',
+    );
+  }
+
+  static Uri deletedUser({required String type, required String userId}) =>
+      Uri.parse('$_baseUrl$_users/$type/$userId');
 
   static Uri get login => Uri.parse('$_baseUrl$_auth/login');
 
   static Uri get allDrivers => Uri.parse('$_baseUrl$_drivers/all');
+
+  static Uri get allPassenger => Uri.parse('$_baseUrl$_passenger');
 
   static Uri get checkConnection => Uri.parse(_baseUrl);
 }

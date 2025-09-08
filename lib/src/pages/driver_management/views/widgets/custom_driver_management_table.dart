@@ -92,7 +92,7 @@ class CustomDriverManagementTable extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          row.status,
+                          row.status.toUserStatus().title,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium,
                         ),

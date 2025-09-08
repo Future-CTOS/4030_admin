@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../gen/assets.gen.dart';
-import '../../../components/drop_down.dart';
 import '../../../infrastructures/commons/app_controller.dart';
 import '../../../infrastructures/routes/route_names/route_names.dart';
 import '../../../infrastructures/utils/spacing.dart';
-import '../../driver_management/model/enums/user_status.dart';
-import '../../driver_management/views/widgets/custom_driver_management_table.dart';
 import '../controller/passenger_management_controller.dart';
 
 class PassengerManagementPage extends GetView<PassengerManagementController> {
@@ -30,61 +28,72 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
         ),
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(child: _content(theme)),
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return _shimmerWidget();
+          } else {
+            return _content(theme, context);
+          }
+        }),
+      ),
     );
   }
 
-  Widget _content(ThemeData theme) => Padding(
-    padding: AppSpacing.largePadding,
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
-          AppSpacing.mediumVerticalSpacer,
-          TextField(
-            decoration: InputDecoration(
-              hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
-              hintStyle: theme.textTheme.bodySmall,
-              prefixIcon: Container(
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.secondary,
-                  shape: BoxShape.circle,
+  Widget _content(ThemeData theme, BuildContext context) => RefreshIndicator(
+    onRefresh: () => controller.fetchAllPassenger(context),
+    child: Padding(
+      padding: AppSpacing.largePadding,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
+            AppSpacing.mediumVerticalSpacer,
+            TextField(
+              decoration: InputDecoration(
+                hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
+                hintStyle: theme.textTheme.bodySmall,
+                prefixIcon: Container(
+                  margin: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.secondary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(Assets.pngs.search.path),
                 ),
-                child: Image.asset(Assets.pngs.search.path),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.secondary,
-                  width: 0.3,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
                 ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.onSecondary,
-                  width: 0.3,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.secondary,
+                    width: 0.3,
+                  ),
                 ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.onSecondary,
-                  width: 0.3,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSecondary,
+                    width: 0.3,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSecondary,
+                    width: 0.3,
+                  ),
                 ),
               ),
             ),
-          ),
-          AppSpacing.mediumVerticalSpacer,
-          _customTable(theme),
-        ],
+            AppSpacing.mediumVerticalSpacer,
+            _customTable(theme, context),
+          ],
+        ),
       ),
     ),
   );
@@ -224,7 +233,7 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
     ),
   );
 
-  Widget _customTable(ThemeData theme) => Container(
+  Widget _customTable(ThemeData theme, BuildContext context) => Container(
     margin: const EdgeInsets.all(12),
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
@@ -254,20 +263,24 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
                 _buildHeaderCell("موقعیت"),
               ],
             ),
-            ...controller.mockTableData.map((row) {
+            ...controller.passengersManagement.map((row) {
               return TableRow(
                 children: [
-                  _buildCell(row["date"] ?? ""),
-                  _buildCell(row["name"] ?? ""),
-                  _buildCell(row["phoneNumber"] ?? ""),
-                  _buildCell(row["nationalCode"] ?? ""),
-                  _buildCell(row["trips"] ?? ""),
+                  _buildCell(row.jalaliDate),
+                  _buildCell('${row.name} ${row.lastName}'),
+                  _buildCell(row.phone),
+                  _buildCell(row.nationalCode),
+                  _buildCell('سفر ها'),
                   Padding(
                     padding: const EdgeInsets.all(6),
                     child: InkWell(
-                      onTap: controller.onDeletePassenger,
+                      onTap: () => controller.onDeletePassenger(
+                        id: row.id,
+                        type: 'passenger',
+                        context: context,
+                      ),
                       child: Text(
-                        row["status"] ?? "",
+                        'حذف',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.error,
@@ -301,4 +314,23 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
       child: Text(text, textAlign: TextAlign.center),
     );
   }
+
+  Widget _shimmerWidget() => Shimmer.fromColors(
+    baseColor: Colors.grey.shade300,
+    highlightColor: Colors.grey.shade100,
+    child: SingleChildScrollView(
+      padding: AppSpacing.largePadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(8, (index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            height: 20,
+            width: double.infinity,
+            color: Colors.white,
+          );
+        }),
+      ),
+    ),
+  );
 }
