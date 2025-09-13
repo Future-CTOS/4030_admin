@@ -40,6 +40,7 @@ class DriverManagementRepository {
   }
 
   Future<Either<String, List<DriverManagementViewModel>>> fetchFilteredDriver({
+    required String searchTarget,
     required UserStatus? userStatus,
     required VehicleType? vehicleType,
   }) async {
@@ -48,6 +49,7 @@ class DriverManagementRepository {
       final http.Response response = await http.get(
         headers: TokenInfo.authHeader(),
         RepositoryUrls.filteredDrivers(
+          searchTarget: searchTarget,
           userStatus: userStatus,
           vehicleType: vehicleType,
         ),
@@ -71,4 +73,5 @@ class DriverManagementRepository {
       return Left(e.toString());
     }
   }
+
 }

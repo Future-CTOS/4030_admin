@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../components/drop_down.dart';
-import '../../../infrastructures/commons/app_controller.dart';
 import '../../../infrastructures/routes/route_names/route_names.dart';
 import '../../../infrastructures/utils/spacing.dart';
 import '../controller/driver_management_controller.dart';
@@ -32,13 +31,7 @@ class DriverManagementPage extends GetView<DriverManagementController> {
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return _shimmerWidget();
-          } else {
-            return _content(theme: theme, context: context);
-          }
-        }),
+        child: Obx(() => _content(theme: theme, context: context)),
       ),
     );
   }
@@ -57,6 +50,13 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                 Column(
                   children: [
                     TextField(
+                      onChanged: (value) {
+                        controller.searchTarget.value = value;
+                        controller.searchDrivers(
+                          context: context,
+                          searchBoxValue: value,
+                        );
+                      },
                       decoration: InputDecoration(
                         hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
                         hintStyle: theme.textTheme.bodySmall,
@@ -100,45 +100,39 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Obx(
-                          () => Expanded(
-                            child: CustomDropDown<VehicleType>(
-                              items: VehicleType.values,
-                              getTitle: (item) => item.title,
-                              hint: VehicleType.allVehicleType.title,
-                              onSelectItem: (final status) =>
-                                  controller.onSelectedVehicleItem(
-                                    context: context,
-                                    status: status,
-                                  ),
-                              icon: Container(
-                                margin: const EdgeInsets.all(6),
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.secondary,
-                                  shape: BoxShape.circle,
+                        Expanded(
+                          child: CustomDropDown<VehicleType>(
+                            items: VehicleType.values,
+                            getTitle: (item) => item.title,
+                            hint: VehicleType.allVehicleType.title,
+                            onSelectItem: (final status) =>
+                                controller.onSelectedVehicleItem(
+                                  context: context,
+                                  status: status,
                                 ),
-                                child: Image.asset(Assets.pngs.filter.path),
+                            icon: Container(
+                              margin: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.secondary,
+                                shape: BoxShape.circle,
                               ),
-                              value: controller.currentVehicle.value,
+                              child: Image.asset(Assets.pngs.filter.path),
                             ),
+                            value: controller.currentVehicle.value,
                           ),
                         ),
-                        Obx(
-                          () => Expanded(
-                            child: CustomDropDown<UserStatus>(
-                              items: UserStatus.values,
-                              getTitle: (item) => item.title,
-                              hint: 'همه وضعیت ها',
-                              onSelectItem: (final status) =>
-                                  controller.onSelectedStatusItem(
-                                    context: context,
-                                    status: status,
-                                  ),
-                              value: controller.currentStatus.value,
-                            ),
+                        Expanded(
+                          child: CustomDropDown<UserStatus>(
+                            items: UserStatus.values,
+                            getTitle: (item) => item.title,
+                            hint: 'همه وضعیت ها',
+                            onSelectItem: (final status) =>
+                                controller.onSelectedStatusItem(
+                                  context: context,
+                                  status: status,
+                                ),
+                            value: controller.currentStatus.value,
                           ),
                         ),
                       ],
@@ -146,7 +140,12 @@ class DriverManagementPage extends GetView<DriverManagementController> {
                   ],
                 ),
                 AppSpacing.mediumVerticalSpacer,
-                CustomDriverManagementTable(data: controller.driverManagements),
+                if (controller.isLoading.value)
+                  _shimmerWidget()
+                else
+                  CustomDriverManagementTable(
+                    data: controller.driverManagements,
+                  ),
               ],
             ),
           ),
@@ -158,7 +157,7 @@ class DriverManagementPage extends GetView<DriverManagementController> {
       children: [
         _header(Theme.of(context)),
         AppSpacing.largeVerticalSpacer,
-        Expanded(child: Obx(() => _menuItems(Theme.of(context)))),
+        Expanded(child: _menuItems(Theme.of(context))),
         _logout(),
       ],
     ),
@@ -191,17 +190,17 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         icon: Icons.dashboard,
         label: 'داشبورد',
         theme: theme,
-        isSelected: AppController.instance.drawerSelectedId.value == 1,
+        isSelected: controller.storage.drawerSelectedId == 1,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 1;
+          controller.storage.setDrawerSelectedId(1);
           Get.back();
           Get.toNamed(RouteNames.dashboard.uri);
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 2,
+        isSelected: controller.storage.drawerSelectedId == 2,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 2;
+          controller.storage.setDrawerSelectedId(2);
           Get.back();
         },
         icon: Icons.people_alt_rounded,
@@ -209,9 +208,9 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 3,
+        isSelected: controller.storage.drawerSelectedId == 3,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 3;
+          controller.storage.setDrawerSelectedId(3);
           Get.back();
           Get.toNamed(RouteNames.passengerManagement.uri);
         },
@@ -220,21 +219,21 @@ class DriverManagementPage extends GetView<DriverManagementController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 4,
+        isSelected: controller.storage.drawerSelectedId == 4,
         icon: Icons.analytics_outlined,
         label: 'مدریت مالی',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 4;
+          controller.storage.setDrawerSelectedId(4);
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 5,
+        isSelected: controller.storage.drawerSelectedId == 5,
         icon: Icons.bookmark,
         label: 'مدیریت کد تخفیف',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value == 4;
+          controller.storage.setDrawerSelectedId(5);
         },
       ),
     ],

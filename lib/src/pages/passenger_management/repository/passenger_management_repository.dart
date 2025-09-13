@@ -59,4 +59,34 @@ class PassengerManagementRepository {
       return Left(e.toString());
     }
   }
+
+  Future<Either<String, List<PassengerManagementViewModel>>> searchPassenger({
+    required String searchTarget,
+  }) async {
+    try {
+      int? statusCode;
+      final http.Response response = await http.get(
+        headers: TokenInfo.authHeader(),
+        RepositoryUrls.searchPassenger(searchTarget: searchTarget),
+      );
+      statusCode = response.statusCode;
+      if (statusCode == 200) {
+        final List<dynamic> jsonData = json.decode(response.body);
+        final List<PassengerManagementViewModel> passengerViewModel = jsonData
+            .map(
+              (e) => PassengerManagementViewModel.fromJson(
+                e as Map<String, dynamic>,
+              ),
+            )
+            .toList();
+
+        return Right(passengerViewModel);
+      } else {
+        return const Left('خطا در گرفتن اطلاعات');
+      }
+    } catch (e) {
+      print(e.toString());
+      return Left(e.toString());
+    }
+  }
 }

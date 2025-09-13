@@ -1,6 +1,8 @@
+import 'package:app_4030_admin/src/infrastructures/commons/storage_handler.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
+ final storage = StorageHandler();
   final mockData = [
     {
       "date": "1403/08/15",

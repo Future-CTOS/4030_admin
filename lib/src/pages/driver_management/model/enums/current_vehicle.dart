@@ -1,8 +1,8 @@
 enum VehicleType {
   allVehicleType('allVehicle', 'وسیله نقلیه'),
   car('car', 'ماشین'),
-  van('van', 'وانت'),
-  motoCycle('motorcycle', 'موتور');
+  van('vanet', 'وانت'),
+  motoCycle('motor', 'موتور');
 
   final String title;
   final String value;

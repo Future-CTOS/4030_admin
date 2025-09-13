@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_4030_admin/src/infrastructures/commons/storage_handler.dart';
 import 'package:app_4030_admin/src/pages/driver_management/model/enums/user_status.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,11 @@ import '../repositories/driver_management_repository.dart';
 class DriverManagementController extends GetxController {
   final Rxn<UserStatus> currentStatus = Rxn<UserStatus>();
   final Rxn<VehicleType> currentVehicle = Rxn<VehicleType>();
+  final RxString searchTarget = RxString('');
   final RxBool isLoading = false.obs;
+
+  final storage = StorageHandler();
+  Timer? _debounce;
   final _repository = DriverManagementRepository();
   List<DriverManagementViewModel> driverManagements = [];
 
@@ -33,12 +40,50 @@ class DriverManagementController extends GetxController {
     );
   }
 
+  Future<void> searchDrivers({
+    required BuildContext context,
+    required String searchBoxValue,
+  }) async {
+    if (searchBoxValue.isEmpty || searchBoxValue.length < 2) {
+      driverManagements.clear();
+      await _fetchAllDriver(context);
+      return;
+    }
+
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () async {
+      driverManagements.clear();
+      isLoading.value = true;
+
+      final Either<String, List<DriverManagementViewModel>> result =
+          await _repository.fetchFilteredDriver(
+            searchTarget: searchBoxValue,
+            userStatus: currentStatus.value,
+            vehicleType: currentVehicle.value,
+          );
+
+      isLoading.value = false;
+
+      result.fold(
+        (errorMessage) => Utils.showSnackBar(
+          context,
+          text: errorMessage,
+          status: StatusEnum.danger,
+        ),
+        (response) {
+          driverManagements = response;
+        },
+      );
+    });
+  }
+
   Future<void> onRefreshDrivers(BuildContext context) async {
     if (currentStatus.value == UserStatus.allStatus) {
       _fetchAllDriver(context);
       return;
     }
     _fetchFilteredDriver(
+      searchTarget: searchTarget.value,
       userStatus: currentStatus.value,
       vehicleType: currentVehicle.value!,
       context: context,
@@ -55,8 +100,9 @@ class DriverManagementController extends GetxController {
       return;
     }
     _fetchFilteredDriver(
+      searchTarget: searchTarget.value,
       userStatus: currentStatus.value,
-      vehicleType: currentVehicle.value!,
+      vehicleType: currentVehicle.value,
       context: context,
     );
   }
@@ -72,6 +118,7 @@ class DriverManagementController extends GetxController {
       return;
     }
     _fetchFilteredDriver(
+      searchTarget: searchTarget.value,
       userStatus: currentStatus.value,
       vehicleType: currentVehicle.value!,
       context: context,
@@ -82,11 +129,13 @@ class DriverManagementController extends GetxController {
     required BuildContext context,
     required UserStatus? userStatus,
     required VehicleType? vehicleType,
+    required String searchTarget,
   }) async {
     driverManagements.clear();
     isLoading.value = true;
     final Either<String, List<DriverManagementViewModel>> result =
         await _repository.fetchFilteredDriver(
+          searchTarget: searchTarget,
           userStatus: userStatus,
           vehicleType: vehicleType,
         );

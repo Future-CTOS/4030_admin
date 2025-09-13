@@ -151,7 +151,7 @@ class DashboardPage extends GetView<DashboardController> {
       children: [
         _header(Theme.of(context)),
         AppSpacing.largeVerticalSpacer,
-        Expanded(child: Obx(() => _menuItems(Theme.of(context)))),
+        Expanded(child:  _menuItems(Theme.of(context))),
         _logout(),
       ],
     ),
@@ -184,16 +184,16 @@ class DashboardPage extends GetView<DashboardController> {
         icon: Icons.dashboard,
         label: 'داشبورد',
         theme: theme,
-        isSelected: AppController.instance.drawerSelectedId.value == 1,
+        isSelected: controller.storage.drawerSelectedId == 1,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 1;
+          controller.storage.setDrawerSelectedId(1);
           Get.back();
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 2,
+        isSelected: controller.storage.drawerSelectedId == 2,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 2;
+          controller.storage.setDrawerSelectedId(2);
           Get.back();
           Get.toNamed(RouteNames.driverManagement.uri);
         },
@@ -202,9 +202,9 @@ class DashboardPage extends GetView<DashboardController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 3,
+        isSelected: controller.storage.drawerSelectedId == 3,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 3;
+          controller.storage.setDrawerSelectedId(3);
           Get.back();
           Get.toNamed(RouteNames.passengerManagement.uri);
         },
@@ -213,21 +213,21 @@ class DashboardPage extends GetView<DashboardController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 4,
+        isSelected: controller.storage.drawerSelectedId == 4,
         icon: Icons.analytics_outlined,
         label: 'مدریت مالی',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 4;
+          controller.storage.setDrawerSelectedId(4);
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 5,
+        isSelected: controller.storage.drawerSelectedId == 5,
         icon: Icons.bookmark,
         label: 'مدیریت کد تخفیف',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value == 4;
+          controller.storage.setDrawerSelectedId(5);
         },
       ),
     ],

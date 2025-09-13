@@ -12,21 +12,32 @@ class RepositoryUrls {
   static const String _passenger = '/passengers';
 
   static Uri filteredDrivers({
+    required String? searchTarget,
     required UserStatus? userStatus,
     required VehicleType? vehicleType,
   }) {
     if (userStatus == null && vehicleType != null) {
-      return Uri.parse('$_baseUrl$_drivers?type=${vehicleType.value}');
+      return Uri.parse(
+        '$_baseUrl$_drivers?type=${vehicleType.value}&q=$searchTarget',
+      );
     }
 
     if (userStatus != null && vehicleType == null) {
-      return Uri.parse('$_baseUrl$_drivers?status=${userStatus.value}');
+      return Uri.parse(
+        '$_baseUrl$_drivers?status=${userStatus.value}&q=$searchTarget',
+      );
     }
 
     return Uri.parse(
-      '$_baseUrl$_drivers?status=${userStatus!.value}&type=${vehicleType!.value}',
+      '$_baseUrl$_drivers?status=${userStatus?.value}&type=${vehicleType?.value}&q=$searchTarget',
     );
   }
+
+  static Uri allDocument({required int driverId}) =>
+      Uri.parse('$_baseUrl$_drivers/$driverId/details');
+
+  static Uri searchPassenger({required String searchTarget}) =>
+      Uri.parse('$_baseUrl$_passenger/search?q=$searchTarget');
 
   static Uri deletedUser({required String type, required String userId}) =>
       Uri.parse('$_baseUrl$_users/$type/$userId');

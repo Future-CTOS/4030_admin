@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../gen/assets.gen.dart';
-import '../../../infrastructures/commons/app_controller.dart';
 import '../../../infrastructures/routes/route_names/route_names.dart';
 import '../../../infrastructures/utils/spacing.dart';
 import '../controller/passenger_management_controller.dart';
@@ -28,15 +27,7 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
         ),
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return _shimmerWidget();
-          } else {
-            return _content(theme, context);
-          }
-        }),
-      ),
+      body: SafeArea(child: Obx(() => _content(theme, context))),
     );
   }
 
@@ -51,6 +42,10 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
             Text('لیست در خواست ها', style: theme.textTheme.bodyLarge),
             AppSpacing.mediumVerticalSpacer,
             TextField(
+              onChanged: (value) => controller.searchPassenger(
+                context: context,
+                searchBoxValue: value,
+              ),
               decoration: InputDecoration(
                 hintText: "جستجو بر اساس نام، شماره موبایل یا کد ملی",
                 hintStyle: theme.textTheme.bodySmall,
@@ -91,7 +86,10 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
               ),
             ),
             AppSpacing.mediumVerticalSpacer,
-            _customTable(theme, context),
+            if (controller.isLoading.value)
+              _shimmerWidget()
+            else
+              _customTable(theme, context),
           ],
         ),
       ),
@@ -103,7 +101,7 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
       children: [
         _header(Theme.of(context)),
         AppSpacing.largeVerticalSpacer,
-        Expanded(child: Obx(() => _menuItems(Theme.of(context)))),
+        Expanded(child: _menuItems(Theme.of(context))),
         _logout(),
       ],
     ),
@@ -136,17 +134,17 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
         icon: Icons.dashboard,
         label: 'داشبورد',
         theme: theme,
-        isSelected: AppController.instance.drawerSelectedId.value == 1,
+        isSelected: controller.storage.drawerSelectedId == 1,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 1;
+          controller.storage.setDrawerSelectedId(1);
           Get.back();
           Get.toNamed(RouteNames.dashboard.uri);
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 2,
+        isSelected: controller.storage.drawerSelectedId == 2,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 2;
+          controller.storage.setDrawerSelectedId(2);
           Get.back();
           Get.toNamed(RouteNames.driverManagement.uri);
         },
@@ -155,9 +153,9 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 3,
+        isSelected: controller.storage.drawerSelectedId == 3,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 3;
+          controller.storage.setDrawerSelectedId(3);
           Get.back();
         },
         icon: Icons.people_alt_rounded,
@@ -165,21 +163,21 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
         theme: theme,
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 4,
+        isSelected: controller.storage.drawerSelectedId == 4,
         icon: Icons.analytics_outlined,
         label: 'مدریت مالی',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value = 4;
+          controller.storage.setDrawerSelectedId(4);
         },
       ),
       _item(
-        isSelected: AppController.instance.drawerSelectedId.value == 5,
+        isSelected: controller.storage.drawerSelectedId == 5,
         icon: Icons.bookmark,
         label: 'مدیریت کد تخفیف',
         theme: theme,
         onTap: () {
-          AppController.instance.drawerSelectedId.value == 4;
+          controller.storage.setDrawerSelectedId(5);
         },
       ),
     ],
@@ -270,7 +268,17 @@ class PassengerManagementPage extends GetView<PassengerManagementController> {
                   _buildCell('${row.name} ${row.lastName}'),
                   _buildCell(row.phone),
                   _buildCell(row.nationalCode),
-                  _buildCell('سفر ها'),
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: InkWell(
+                      // onTap: () => Get.toNamed(RouteNames.),
+                      child: Text(
+                        'مشاهده',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(6),
                     child: InkWell(

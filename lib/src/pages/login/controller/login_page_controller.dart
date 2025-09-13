@@ -1,3 +1,4 @@
+import 'package:app_4030_admin/src/infrastructures/commons/storage_handler.dart';
 import 'package:app_4030_admin/src/infrastructures/utils/validators.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/widgets.dart';
@@ -13,7 +14,7 @@ import '../repository/login_repository.dart';
 
 class LoginPageController extends GetxController {
   final _repository = LoginRepository();
-
+  final _storage = StorageHandler();
   final RxString countryCode = '+98'.obs;
 
   final TextEditingController phoneNumberTextController =
@@ -46,15 +47,15 @@ class LoginPageController extends GetxController {
       phone: phoneNumberTextController.text,
       password: passwordTextController.text,
     );
-    final Either<String, LoginViewModel> resultOrException =
-        await _repository.login(dto: registerDto);
+    final Either<String, LoginViewModel> resultOrException = await _repository
+        .login(dto: registerDto);
     isLoading.value = false;
     resultOrException.fold(
       (final error) =>
           Utils.showSnackBar(context, text: error, status: StatusEnum.danger),
       (final response) {
-        AppController.instance.phoneNumber = phoneNumberTextController.text;
-        AppController.instance.token = response.accessToken;
+        _storage.setPhoneNumber(phoneNumberTextController.text);
+        _storage.setToken(response.accessToken);
         Get.toNamed(RouteNames.dashboard.uri);
       },
     );

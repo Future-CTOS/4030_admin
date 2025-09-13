@@ -48,7 +48,7 @@ class DriverLicenseDocumentPage
                   children: [
                     _buildRowInformation(
                       key: 'نام:',
-                      value: 'بهراد',
+                      value: controller.documentViewModel?.personalInfo.name ?? 'null',
                       context: context,
                     ),
                     AppSpacing.xxLargeVerticalSpacer,
